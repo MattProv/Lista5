@@ -24,6 +24,12 @@ $(OUTPUT): $(OBJ_FILE)
 
 run: $(OUTPUT)
 	./$(OUTPUT)
+
+boot: boot.asm
+	nasm -fbin boot.asm
+	qemu-system-i386 -drive format=raw,file=boot
+
+
 # Usuwanie plików tymczasowych
 clean:
 	rm -f $(OBJ_FILE) $(OUTPUT)

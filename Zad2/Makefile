@@ -24,6 +24,13 @@ $(OUTPUT): $(OBJ_FILE)
 
 run: $(OUTPUT)
 	./$(OUTPUT)
+
+gdb: 
+	nasm $(NASM_FLAGS) -g -F dwarf $(ASM_SOURCE) -o $(OBJ_FILE)
+	ld $(LD_FLAGS) $(OBJ_FILE) -o $(OUTPUT)
+	gdb $(OUTPUT)
+
+
 # Usuwanie plików tymczasowych
 clean:
 	rm -f $(OBJ_FILE) $(OUTPUT)

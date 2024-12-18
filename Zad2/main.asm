@@ -87,9 +87,6 @@ _start:
     mov     esi, 0
     mov     edi, 0
 
-    mov eax, edi
-    call iprintLF
-
     ; a1
     call readint
     add esi, eax
