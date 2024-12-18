@@ -1,0 +1,5 @@
+layout asm
+x/44c 0x0804a070
+cont
+nexti
+catch syscall

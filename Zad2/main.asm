@@ -10,6 +10,7 @@ eq2          db      'Suma przekatnej: ', 0
 
 SECTION .bss
 number:      resb    32
+matrix:     resb    9
 
 SECTION .text
 global _start
@@ -91,40 +92,51 @@ _start:
     call readint
     add esi, eax
     add edi, eax
+    ; save eax to matrix + 0
+    mov [matrix], eax
 
     ; a2
     call readint
     add esi, eax
+    ; save eax to matrix + 1
+    mov [matrix + 1], eax
 
     ; a3
     call readint
     add esi, eax
+    mov [matrix + 2], eax
 
     ; b1
     call readint
     add esi, eax
+    mov [matrix + 3], eax
 
     ; b2
     call readint
     add esi, eax
     add edi, eax
+    mov [matrix + 4], eax
 
     ; b3
     call readint
     add esi, eax
+    mov [matrix + 5], eax
 
     ; c1
     call readint
     add esi, eax
+    mov [matrix + 6], eax
 
     ; c2
     call readint
     add esi, eax
+    mov [matrix + 7], eax
     
     ; c3
     call readint
     add esi, eax
     add edi, eax
+    mov [matrix + 8], eax
 
     mov     eax, eq1
     call    sprint
