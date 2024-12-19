@@ -40,32 +40,32 @@ readint:
     push    ecx
     push    edx
     mov     edx, 32     ; read 32 characters
-    mov     ecx, number  ; store them in digit
-    mov     ebx, 0  ; file descriptor 0 (stdin)
-    mov     eax, 3  ; read syscall
+    mov     ecx, number ; store them in digit
+    mov     ebx, 0      ; file descriptor 0 (stdin)
+    mov     eax, 3      ; read syscall
     int     80h
 
     xor     eax, eax    ; clear eax, will be used as sum
-                        ; ecx is already set to number
+                        ; ecx is already set to &number
 addchar: 
                         ; eax is value to return
                         ; edx is current character
                         ; ecx is current position
                         ; ebx is base
-    movzx   edx, byte [ecx]
-    cmp     edx, 0Ah
-    je      retint
-    cmp     edx, 0
-    je      retint
-    cmp     ecx, number + 32
-    je      retint
+    movzx   edx, byte [ecx] ; load char to edx
+    cmp     edx, 0Ah        ; check if it's newline
+    je      retint          ; if yes, return
+    cmp     edx, 0          ; check if it's null
+    je      retint          ; if yes, return
+    cmp     ecx, number + 32; check if we read all 32 digits
+    je      retint          ; if yes, return
     
-    imul    eax, 10
-    sub     edx, 48
-    add     eax, edx
+    imul    eax, 10         ; multiply eax by 10
+    sub     edx, 48         ; convert digit to its value
+    add     eax, edx        ; add to sum
 
-    inc     ecx
-    jmp     addchar
+    inc     ecx             ; increment pointer
+    jmp     addchar         ; loop
 
 retint:
     pop edx

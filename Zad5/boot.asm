@@ -49,9 +49,10 @@ boot2:
     mov fs, ax
     mov gs, ax
     mov ss, ax
+    
 
     ; Rysowanie fraktala
-    lea edi, Screen        ; Adres pamięci ekranu graficznego
+    lea edi, [Screen]        ; Adres pamięci ekranu graficznego
     mov dword [CntrA], -510*256
     mov word [X], 0
 
@@ -100,7 +101,7 @@ Break:
 
     add dword [CntrA], 568
     inc word [X]
-    lea edi, Screen
+    lea edi, [Screen]
     add edi, dword [X]
     cmp word [X], 320
     jnz @@LoopHoriz
@@ -108,8 +109,6 @@ Break:
 halt:
     cli
     hlt
-
-; Dane do fraktala
 Screen equ 0xA0000
 CntrA dd 0
 CntrB dd 0

@@ -29,29 +29,28 @@ _start:
     xor     esi, esi    ; clear esi, will be used as sum
 
 loop:
-    mov    eax, 4       ; write syscall
-    int    80h          
+    mov     eax, 4       ; write syscall
+    int     80h          
 
-    mov al, byte [ecx]  ; Załaduj 8-bitową wartość z pamięci do AL
-    sub al, '0'         ; Konwertuj ASCII na cyfrę (jeśli to liczba)
-    add esi, eax        ; Dodaj wartość rozszerzoną do 32-bitowego rejestru ESI
+    mov     al, byte [ecx]  ; load char to al
+    sub     al, '0'         ; convert digit to its value
+    add     esi, eax        ; add to sum
 
-    inc    ecx          ; increment pointer
+    inc     ecx          ; increment pointer
 
-    cmp   ecx, digit+5
+    cmp     ecx, digit+5    ; check if we read all 5 digits
 
-    je     exitloop
+    je      exitloop        ; if yes, exit loop
 
-    mov    eax, addmsg
-    call   sprint
+    mov     eax, addmsg     ; print addmsg
+    call    sprint          ; 
 
-    cmp   ecx, digit+5
-    jl     loop
+    jmp     loop            ; loop
 exitloop:
-    mov eax, eqmsg
-    call sprint
+    mov     eax, eqmsg      ; print eqmsg
+    call    sprint
 
-    mov eax, esi
-    call iprintLF
+    mov     eax, esi        ; print sum
+    call    iprintLF
 
     call    quit

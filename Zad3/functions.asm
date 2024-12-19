@@ -106,16 +106,16 @@ xprint:
 xdivideLoop:
     inc     ecx             ; count each byte to print - number of characters
     mov     edx, 0          ; empty edx
-    mov     esi, 16         ; mov 10 into esi
+    mov     esi, 16         ; mov 16 into esi
     idiv    esi             ; divide eax by esi
-    cmp     edx, 9          ; is the remainder lower than 9?
+    cmp     edx, 9          ; is the remainder lower than 9? (edx holds the remainder after a divide instruction)
     jle     xDeci           ; jump if digit<=9
-    add     edx, 7         ; convert edx to it's ascii representation - edx holds the remainder after a divide instruction
+    add     edx, 7          ; add the offset to the remainder to get the correct ascii representation (a-f)
 xDeci:
-    add     edx, 48         ; convert edx to it's ascii representation - edx holds the remainder after a divide instruction
+    add     edx, 48         ; convert edx to it's ascii representation
     push    edx             ; push edx (string representation of an intger) onto the stack
     cmp     eax, 0          ; can the integer be divided anymore?
-    jnz     xdivideLoop      ; jump if not zero to the label divideLoop
+    jnz     xdivideLoop     ; jump if not zero to the label divideLoop
  
 xprintLoop:
     dec     ecx             ; count down each byte that we put on the stack
@@ -123,7 +123,7 @@ xprintLoop:
     call    sprint          ; call our string print function
     pop     eax             ; remove last character from the stack to move esp forward
     cmp     ecx, 0          ; have we printed all bytes we pushed onto the stack?
-    jnz     xprintLoop       ; jump is not zero to the label printLoop
+    jnz     xprintLoop      ; jump if not zero to the label printLoop
  
     pop     esi             ; restore esi from the value we pushed onto the stack at the start
     pop     edx             ; restore edx from the value we pushed onto the stack at the start

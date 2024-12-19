@@ -2,60 +2,58 @@
 
 SECTION .data
 welcomemsg       db      'Liczby pierwsze od 1 do 100 000:', 0Ah, 0
-array           times   100000 db 0
+array           times   100000 db 0     ; tablica do sita eratostenesa
 
 SECTION .text
 global _start
 
-; zwraca w edi 1 jesli liczba nie jest pierwsza 0 w przeciwnym wypadku
+; zwraca w edi 1 jesli liczba nie jest pierwsza, 0 w przeciwnym wypadku
 getzsita:
-    push eax
-    mov al, [array + esi] ; Pobierz odpowiedni bajt
-    test al, al           ; Sprawdź, czy jest różny od 0
-    mov edi, 0            ; Domyślnie ustaw edi na 0 (liczba jest pierwsza)
-    jz not_prime          ; Jeśli al == 0, przejdź do not_prime
-    mov edi, 1            ; Liczba nie jest pierwsza
+    push    eax
+    mov     al, [array + esi]   ; Pobierz odpowiedni bajt
+    test    al, al              ; Sprawdź, czy jest różny od 0
+    mov     edi, 0              ; Domyślnie ustaw edi (return) na 0 (liczba jest pierwsza)
+    jz      not_prime           ; Jeśli al == 0, przejdź do not_prime
+    mov     edi, 1              ; Liczba nie jest pierwsza
 not_prime:
-    pop eax
+    pop     eax
     ret
 
 
 
-; ustawia pozycje w tablicy okreslona w eax na 1
+; ustawia tablice[eax] na 1 (liczba niepierwsza)
 setsito:
-    push eax
+    push    eax
 
-    mov byte [array + eax], 1 ; Zapisz zmieniony bajt z powrotem do tablicy
+    mov     byte [array + eax], 1 ; Zapisz zmieniony bajt z powrotem do tablicy
 
-    pop ecx
+    pop     ecx
     ret    
 
 _start:
-    mov     eax, welcomemsg
+    mov     eax, welcomemsg ; wypisz informacje
     call    sprint
 
-    mov esi, 2
-    mov eax, esi
-    call iprintLF
+    mov     esi, 2          ; zaczynamy od 2
+    mov     eax, esi        ; wypisz 2
+    call    iprintLF        ; 
 loop:
-    call getzsita
-    cmp edi, 1
-    je incesi
-    ;liczba jest pierwsza, wypisac ja
-    mov eax, esi
-    call iprintLF
+    call    getzsita        ; sprawdz czy liczba jest pierwsza
+    cmp     edi, 1          ; jesli nie jest, przejdz do incesi
+    je      incesi          ;
+    
+    mov     eax, esi        ; wypisz liczbe (jest pierwsza)
+    call    iprintLF
 innerloop:
+    call    setsito         ; ustawic tablice[eax] na liczbe niepierwsza
 
-    ;ustawic dana flage na 1
-    call setsito
-
-    add eax, esi
-    cmp eax, 100000
-    jl innerloop
+    add     eax, esi        ; zwieksza eax o wartosc aktualnej liczby pierwszej
+    cmp     eax, 100000     ; sprawdz czy przekroczylismy zakres
+    jl      innerloop       ; jesli nie, kontynuuj
     
 incesi:
-    inc esi
-    cmp esi, 100000
-    jl loop
+    inc     esi             ; zwieksz esi
+    cmp     esi, 100000     ; sprawdz czy przekroczylismy zakres
+    jl      loop            ; jesli nie, kontynuuj
 
     call    quit
